@@ -1,0 +1,24 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <h3>Products data</h3>
+        @if (!Model.SuccessfulRequest)
+        {
+            <p class="alert-danger">@Model.ErrorMessage</p>
+        }
+        else
+        {
+            <ul class="list-unstyled">
+                @foreach (var product in Model.Products)
+                {
+                    <li>@product.Id - @product.Name</li>
+                }
+            </ul>
+        }
+    </div>
+
