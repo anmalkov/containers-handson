@@ -1,0 +1,18 @@
+version: '3.3'
+
+services:
+   api:
+     image: anmcdemo.azurecr.io/helloworld-api:latest
+     restart: always
+     ports:
+      - '5000:5000'
+
+   web:
+     depends_on:
+       - api
+     image: anmcdemo.azurecr.io/helloworld-web:latest
+     ports:
+       - '80:80'
+     restart: always
+     environment:
+       HELLOWORLD_APIURL: http://api:5000/api/products

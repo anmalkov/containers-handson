@@ -1,0 +1,9 @@
+
+docker build -f .\HelloWorld.Api\Dockerfile -t helloworld-api:1.2 .
+docker run -d -p 5000:5000 helloworld-api:1.2
+docker inspect --format='{{.Config.Image}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -q)
+http://localhost:5000/api/products
+
+docker build -f .\HelloWorld.Web\Dockerfile -t helloworld-web:1.1 .
+docker run -d -p 33344:80 helloworld-web:1.1 -env HELLOWORLD_APIURL=http://172.17.0.2:5000/api/products
+http://localhost:33344

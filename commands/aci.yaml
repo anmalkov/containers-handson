@@ -1,0 +1,38 @@
+apiVersion: 2018-10-01
+name: anmhelloworld
+properties:
+  containers:
+  - name: helloworld-web
+    properties:
+      image: anmcdemo.azurecr.io/helloworld-web:latest
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+      ports:
+      - port: 80
+      environmentVariables:
+        - name: 'HELLOWORLD_APIURL'
+          value: 'http://localhost:5000/api/products'
+  - name: helloworld-api
+    properties:
+      image: anmcdemo.azurecr.io/helloworld-api:latest
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+      ports:
+      - port: 5000
+  osType: Linux
+  ipAddress:
+    type: Public
+    ports:
+    - protocol: tcp
+      port: '80'
+    dnsNameLabel: "anmhelloworld"
+  imageRegistryCredentials:
+  - server: anmcdemo.azurecr.io
+    username: anmcdemo
+    password: "4DFeROq/KN4Nj6dpzLYfIDOsyGbcXM1e"
+tags: null
+type: Microsoft.ContainerInstance/containerGroups

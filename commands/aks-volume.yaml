@@ -1,0 +1,45 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: managed-premium
+provisioner: kubernetes.io/azure-disk
+reclaimPolicy: Delete
+parameters:
+  storageaccounttype: Premium_LRS
+  kind: Managed
+# reclaim policies “Retain”, “Recycle”, and “Delete”.
+# For dynamically provisioned PersistentVolumes, the default reclaim policy is “Delete” - a dynamically provisioned volume is automatically deleted when a user deletes the corresponding PersistentVolumeClaim.
+# This automatic behavior might be inappropriate if the volume contains precious data. In that case, it is more appropriate to use the “Retain” policy. With the “Retain” policy, if a user deletes a PersistentVolumeClaim, the corresponding PersistentVolume is not be deleted. Instead, it is moved to the Released phase, where all of its data can be manually recovered.
+# Warning: The Recycle reclaim policy is deprecated. Instead, the recommended approach is to use dynamic provisioning.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: azure-managed-disk
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: managed-premium
+  resources:
+    requests:
+      storage: 5Gi
+# The access modes are:
+#     ReadWriteOnce – the volume can be mounted as read-write by a single node
+#     ReadOnlyMany – the volume can be mounted read-only by many nodes
+#     ReadWriteMany – the volume can be mounted as read-write by many nodes
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  containers:
+    - name: apivolume
+      image: anmcdemo.azurecr.io/helloworld-api:latest
+      volumeMounts:
+      - mountPath: "/mnt/azure"
+        name: volume
+  volumes:
+    - name: volume
+      persistentVolumeClaim:
+        claimName: azure-managed-disk
