@@ -3,7 +3,7 @@ az login
 az account show --query name --output json
 
 az account list --query "[].name" --output json
-az account set --subscription="Microsoft Azure Internal Consumption"
+az account set --subscription="<subscription name>"
 
 $rg="container-demo"
 $acr="anmcdemo"

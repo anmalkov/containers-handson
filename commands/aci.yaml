@@ -33,6 +33,6 @@ properties:
   imageRegistryCredentials:
   - server: anmcdemo.azurecr.io
     username: anmcdemo
-    password: "4DFeROq/KN4Nj6dpzLYfIDOsyGbcXM1e"
+    password: "<acr password>"
 tags: null
 type: Microsoft.ContainerInstance/containerGroups
